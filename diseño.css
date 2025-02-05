@@ -129,6 +129,7 @@ table tr:last-child td:last-child {
 }
 /* Estilos del popup */
 #popup {
+   margin-left: 43%;
     position: absolute;
     top: 20px;
     background-color: #ffb6c1;

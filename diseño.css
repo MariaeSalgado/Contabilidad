@@ -1,0 +1,148 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f3e9;
+    color: #5d576b;
+   
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    margin-top: 20px;
+    margin-left: 40%;
+    background-color: #fff5f8;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+h1 {
+    text-align: center;
+    color: #d882a3;
+}
+
+/* Estilos del formulario */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #a06cd5;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e0bbe4;
+    border-radius: 5px;
+    background-color: #f3e8ff;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #d882a3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #a06cd5;
+}
+
+/* Estilos de resultados tipo Excel */
+table {
+    margin: 20px auto;
+    width: 90%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fdf6f0;
+    border: 2px solid #f3d9dc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    border: 1px solid #f3d9dc;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+table th {
+    background-color: #ffcad4;
+    color: #5d2a42;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #fde2e4;
+}
+
+table tr:nth-child(odd) {
+    background-color: #fff1f2;
+}
+
+table tr:hover {
+    background-color: #ffdee2;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Bordes redondeados en los extremos */
+table th:first-child, table td:first-child {
+    border-left: 0;
+}
+
+table th:last-child, table td:last-child {
+    border-right: 0;
+}
+
+/* Bordes redondeados superiores */
+table tr:first-child th:first-child {
+    border-top-left-radius: 12px;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 12px;
+}
+
+/* Bordes redondeados inferiores */
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+.results-section {
+    margin-top: 20px;
+}
+/* Estilos del popup */
+#popup {
+    position: absolute;
+    top: 20px;
+    background-color: #ffb6c1;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 3.5s;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}

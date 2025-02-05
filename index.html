@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Salario</title>
+ <link rel="stylesheet" href="diseño.css">
+</head>
+<body>
+ 
+    <div id="popup">Calculadora de Salarios --María Salgado-- </div>
+    <div class="container">
+        <!-- Sección del formulario -->
+        <div class="form-section">
+            <h1>Calculadora de Salario</h1>
+            <form id="salaryForm">
+                <div class="form-group">
+                    <label for="firstName">Nombre:</label>
+                    <input type="text" id="firstName" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Apellido:</label>
+                    <input type="text" id="lastName" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="position">Cargo:</label>
+                    <input type="text" id="position" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="salary">Salario:</label>
+                    <input type="text" id="salary" required min="365" step="0.01" placeholder="Ingresa un salario mayor a $365" autocomplete="off">
+                </div>
+               
+                <button type="submit">Calcular</button>
+            </form>
+        </div>
+ 
+        <!-- Sección de resultados -->
+        <div class="results-section">
+            
+            <button id="downloadExcel" style="margin-top: 20px; display: none;">Descargar Excel</button>
+        </div>
+    </div>
+    <div class="results" id="results">
+        <!-- Los resultados aparecerán aquí -->
+    </div>
+    <!-- Incluir la biblioteca SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+ 
+ 
+    // Obtener el popup
+    const popup = document.getElementById("popup");
+ 
+    // Mostrar con animación
+    popup.classList.add("show");
+ 
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      popup.classList.remove("show");
+    }, 3000);
+ 
+    // Eliminar el popup completamente después de la animación
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 3500); // Espera 500ms adicionales para que termine la transición
+ 
+   
+        document.getElementById('salaryForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que el formulario se envíe
+            calculateSalary();
+        });
+   
+        function calculateSalary() {
+            const salary = parseFloat(document.getElementById('salary').value);
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const position = document.getElementById('position').value;
+   
+            // Calcular ISSS
+            const isss = salary > 1062.50 ? 30 : salary * 0.03;
+   
+            // Calcular AFP
+            const afp = salary > 6285.71 ? 72.5 : salary * 0.0725;
+   
+            // Calcular renta imponible
+            const rentaImponible = salary - isss - afp;
+   
+            // Calcular ISR
+            let isr = 0;
+            if (rentaImponible > 2038.10) {
+                isr = (rentaImponible - 2038.10) * 0.30 + 288.57;
+            } else if (rentaImponible > 895.24) {
+                isr = (rentaImponible - 895.24) * 0.20 + 60.00;
+            } else if (rentaImponible > 472.00) {
+                isr = (rentaImponible - 472.00) * 0.10 + 17.67;
+            }
+   
+            // Calcular ISSSpatrono
+            const ISSSpatrono = salary > 1062.50 ? 75 : salary * 0.075;
+   
+            // Calcular AFPpatrono
+            const AFPpatrono = salary > 6285.71 ? 77.5 : salary * 0.0775;
+   
+            // Calcular totales
+            const totalIsss = isss + ISSSpatrono;
+            const totalAfp = afp + AFPpatrono;
+   
+            // Calcular salario líquido
+            const salarioLiquido = rentaImponible - isr;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Cargo</th>
+                        <th>Salario Bruto</th>
+                        <th>ISSS (3%)</th>
+                        <th>AFP (7.25%)</th>
+                        <th>Renta Imponible</th>
+                        <th>ISR</th>
+                        <th>Salario Líquido</th>
+                        <th>ISSS (7.5% Patrono)</th>
+                        <th>AFP (8.75% Patrono)</th>
+                        <th>Total ISSS</th>
+                        <th>Total AFP</th>
+                    </tr>
+                    <tr>
+                        <td>${firstName} ${lastName}</td>
+                        <td>${position}</td>
+                        <td>$${salary.toFixed(2)}</td>
+                        <td>$${isss.toFixed(2)}</td>
+                        <td>$${afp.toFixed(2)}</td>
+                        <td>$${rentaImponible.toFixed(2)}</td>
+                        <td>$${isr.toFixed(2)}</td>
+                        <td>$${salarioLiquido.toFixed(2)}</td>
+                        <td>$${ISSSpatrono.toFixed(2)}</td>
+                        <td>$${AFPpatrono.toFixed(2)}</td>
+                        <td>$${totalIsss.toFixed(2)}</td>
+                        <td>$${totalAfp.toFixed(2)}</td>
+                    </tr>
+                </table>
+            `;
+   
+            // Mostrar el botón de descarga
+            document.getElementById('downloadExcel').style.display = 'block';
+   
+            // Guardar los datos para el Excel
+            const data = [
+                ["Nombre Completo", "Cargo", "Salario Bruto", "ISSS", "AFP", "Renta Imponible", "ISR", "Salario Líquido", "ISSSpatrono", "AFPpatrono", "Total ISSS", "Total AFP"],
+                [`${firstName} ${lastName}`, position, salary.toFixed(2), isss.toFixed(2), afp.toFixed(2), rentaImponible.toFixed(2), isr.toFixed(2), salarioLiquido.toFixed(2), ISSSpatrono.toFixed(2), AFPpatrono.toFixed(2), totalIsss.toFixed(2), totalAfp.toFixed(2)]
+            ];
+   
+            // Configurar el evento de descarga
+            document.getElementById('downloadExcel').addEventListener('click', () => {
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Datos de Salario");
+                XLSX.writeFile(workbook, "datos_salario.xlsx");
+            });
+        }
+    </script>
+   
+</body>
+</html>

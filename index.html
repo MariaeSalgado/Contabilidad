@@ -81,7 +81,7 @@
             const isss = salary > 1062.50 ? 30 : salary * 0.03;
    
             // Calcular AFP
-            const afp = salary > 6285.71 ? 72.5 : salary * 0.0725;
+            const afp = salary * 0.0725;
    
             // Calcular renta imponible
             const rentaImponible = salary - isss - afp;
@@ -100,7 +100,7 @@
             const ISSSpatrono = salary > 1062.50 ? 75 : salary * 0.075;
    
             // Calcular AFPpatrono
-            const AFPpatrono = salary > 6285.71 ? 77.5 : salary * 0.0775;
+            const AFPpatrono = salary * 0.0875;
    
             // Calcular totales
             const totalIsss = isss + ISSSpatrono;
